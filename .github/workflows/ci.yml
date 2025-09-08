@@ -1,0 +1,85 @@
+name: CI
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  format:
+    if: github.event.pull_request.head.ref != 'changeset-release/main'
+    name: 💅 Format
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v4
+
+      - name: Setup
+        uses: ./.github/actions/setup
+
+      - name: Run format
+        run: bun run format:check
+
+  lint:
+    if: github.event.pull_request.head.ref != 'changeset-release/main'
+    name: 🕵 Lint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v4
+
+      - name: Setup
+        uses: ./.github/actions/setup
+
+      - name: Run lint
+        run: bun run lint
+
+  typecheck:
+    if: github.event.pull_request.head.ref != 'changeset-release/main'
+    name: ✅ Typecheck
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v4
+
+      - name: Setup
+        uses: ./.github/actions/setup
+
+      - name: Run typecheck
+        run: bun run typecheck
+
+  test:
+    if: github.event.pull_request.head.ref != 'changeset-release/main'
+    name: 🧪 Test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v4
+
+      - name: Setup
+        uses: ./.github/actions/setup
+
+      - name: Run test
+        run: bun run test
+
+  build:
+    if: github.event.pull_request.head.ref != 'changeset-release/main'
+    name: 🧰 Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v4
+
+      - name: Setup
+        uses: ./.github/actions/setup
+
+      - name: Run build
+        run: bun run build
+
+  status-check:
+    if: github.event.pull_request.head.ref == 'changeset-release/main'
+    name: 📋 Status check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Report Success
+        run: echo "Marking all checks as successful for changeset-release/main branch."
